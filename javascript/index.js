@@ -14,15 +14,24 @@ let milUni = document.getElementById('milUni');
 let splits = document.getElementById('splits');
 
 function printTime() {
-  // ... your code goes here
+  printSeconds();
+  printMinutes();
 }
 
 function printMinutes() {
-  // ... your code goes here
+  let minutes = chronometer.twoDigitsNumber(chronometer.getMinutes());
+  let minutesLeft = minutes[0];
+  let minutesRight = minutes[1];
+  minUni.textContent = minutesRight;
+  minDec.textContent = minutesLeft;
 }
 
 function printSeconds() {
-  // ... your code goes here
+  let seconds = chronometer.twoDigitsNumber(chronometer.getSeconds());
+  let secondLeft = seconds[0];
+  let secondRight = seconds[1];
+  secUni.textContent = secondRight;
+  secDec.textContent = secondLeft;
 }
 
 // ==> BONUS
@@ -55,11 +64,43 @@ function setResetBtn() {
 }
 
 // Start/Stop Button
-btnLeft.addEventListener('click', () => {
-  // ... your code goes here
+btnLeft.addEventListener("click", (event) => {
+  if (btnLeft.textContent === "START") {
+    btnLeft.className = "btn stop"
+    btnLeft.textContent = "STOP";
+    btnRight.className= "btn split"
+    btnRight.textContent = "SPLIT";
+    chronometer.startClick(printTime);
+  } else {
+    btnLeft.textContent = "START";
+    btnLeft.className = "btn start"
+    btnRight.className = "btn reset"
+    btnRight.textContent = "RESET";
+    chronometer.stopClick();
+  }
 });
 
 // Reset/Split Button
-btnRight.addEventListener('click', () => {
-  // ... your code goes here
+btnRight.addEventListener("click", (event) => {
+  if (btnRight.textContent === "RESET") {
+  btnLeft.textContent = "START";
+  btnLeft.classList = "btn start"
+  minDec.textContent = 0;
+  minUni.textContent = 0;
+  secUni.textContent = 0;
+  secDec.textContent = 0;
+  const deleteSplit = [...splits.getElementsByClassName("split-moment")];
+  for (let i = 0; i < deleteSplit.length; i++) {
+    splits.removeChild(deleteSplit[i]);
+  }
+  chronometer.resetClick();
+ }
+  if (btnRight.textContent === "SPLIT") {
+    let newLi = document.createElement("li");
+    splits.appendChild(newLi);
+    newLi.classList.add("split-moment");
+    newLi.innerHTML = chronometer.splitClick();
+  }
 });
+
+
